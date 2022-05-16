@@ -1,0 +1,131 @@
+:root {
+    --BG: #373737;
+    --BUTTON: #262626;
+    --HIGHLIGHT: #fbbc46;
+    --TEXT: #d2d2d2;
+    --TEXT-SECONDARY: #8c8c8c;
+    --SECONDARY: #595959;
+    --FONT: 'Nunito Sans', sans-serif;
+}
+
+body, * {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: var(--FONT);
+}
+
+p,
+span,
+div,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--TEXT);
+}
+
+body {
+    background-color: var(--BG);
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.home, .join, .host {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+button.primary {
+    background-color: var(--HIGHLIGHT);
+    color: var(--BG);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    width: 100%;
+}
+
+button.secondary {
+    background-color: var(--BUTTON);
+    color: var(--TEXT);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+button:active {
+    opacity: 0.6;
+}
+
+#header {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#main-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.connection-status {
+    color: var(--TEXT-SECONDARY);
+    padding: 8px;
+    transition: 200ms;
+}
+
+.connection-status:hover {
+    background-color: var(--BUTTON);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.connection-status span#not-connected {
+    color: #ff3e50;
+    margin-right: 4px;
+    vertical-align: baseline;
+}
+
+.connection-status span#connected {
+    color: #35ac5e;
+    margin-right: 4px;
+    vertical-align: baseline;
+}
+
+/* input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.2em;
+    outline: none;
+    background-color: var(--BUTTON);
+    color: var(--TEXT);
+    width: 100%;
+} */
