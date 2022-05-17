@@ -8,7 +8,7 @@
       <InputWithLabel :icon="true" label="folder" placeholder="Project directory" :value="hostProject"/>
       <button class="secondary" @click="browseProject">...</button>
     </div>
-    <br/><br/>
+    <br/><br/><br/><br/>
     <button class="primary" @click="startServer">Start Server</button>
     <br/>
     <button class="secondary" @click="getDiff">Get Diff</button>
@@ -73,9 +73,9 @@ export default {
       });
     },
 
-    getDiff() {
-      VersionControl.getDiff(this.S4LDir);
-      console.log('this should have gotten the diff');
+    async getDiff() {
+      const diff = await VersionControl.getDiff(this.hostProject);
+      console.log(diff);
     },
 
     browseProject() {

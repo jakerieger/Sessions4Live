@@ -78,17 +78,17 @@ module.exports = {
 
     getDiff: async function(projPath) {
         return new Promise((resolve, reject) => {
-            const result = spawn(gitPath, ['diff', '>', `S4L/${Date.now() + '.diff'}`], { cwd: projPath });
+            const result = spawn(gitPath, ['diff'], { cwd: projPath });
 
             let diff = '';
 
             result.stderr.on('data', (data) => {
                 console.log(`stderr: ${data}`);
-                reject(data);
+                reject(data.toString());
             });
 
             result.stdout.on('data', (data) => {
-                diff += data;
+                diff += data.toString();
             });
 
             result.on('close', (code) => {
