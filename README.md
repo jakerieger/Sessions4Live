@@ -4,6 +4,8 @@
 
 <h1 align="center">Sessions4Live</h1>
 
+![](docs/screenshot_1.png)
+
 ## What is Sessions4Live?
 
 Sessions4Live (or S4L) is a tool for collaborating on Ableton Live projects in real time, much like Google Docs or VSCode LiveShare. It brings real-time collaboration to the studio.
@@ -11,6 +13,8 @@ Sessions4Live (or S4L) is a tool for collaborating on Ableton Live projects in r
 ## How does it work?
 
 Behind the scenes, S4L uses [Git](https://git-scm.com/) to track file changes and sends the diff back to the client/s where the changes are mirrored. It tracks all connected clients' inputs across the DAW window and syncs those across the network so you can see in real time what the other person is changing.
+
+![](docs/screenshot_2.png)
 
 ## Can I use it?
 

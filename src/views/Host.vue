@@ -1,20 +1,19 @@
 <template>
   <div class="host">
-    <div id="header">
-      <h1>Host</h1>
+    <h1>Host</h1>
+    <br/><br/>
+    <InputWithLabel :icon="true" label="power-plug" :value="hostPort.toString()"/>
+    <br/>
+    <div id="project-dir">
+      <InputWithLabel :icon="true" label="folder" placeholder="Project directory" :value="hostProject"/>
+      <button class="secondary" @click="browseProject">...</button>
     </div>
-    <div id="main-menu">
-      <InputWithLabel label="Port" :value="hostPort"/>
-      <br/>
-      <div id="project-dir">
-        <InputWithLabel label="Project" :value="hostProject"/>
-        <button class="secondary" @click="browseProject">...</button>
-      </div>
-      <br/><br/>
-      <button class="primary" @click="startServer">Start Server</button>
-      <br/>
-      <button class="secondary" @click="onBack">Back</button>
-    </div>
+    <br/><br/>
+    <button class="primary" @click="startServer">Start Server</button>
+    <br/>
+    <button class="secondary" @click="getDiff">Get Diff</button>
+    <br/>
+    <button class="secondary" @click="onBack">Back</button>
   </div>
 </template>
 
@@ -22,7 +21,7 @@
 import { remote, ipcRenderer } from 'electron';
 import fs from 'fs';
 import path from 'path';
-import { extractProjectFile } from '../extractProjectFile';
+import * as VersionControl from '../versionControl';
 
 import InputWithLabel from '@/components/InputWithLabel.vue';
 
@@ -33,14 +32,19 @@ export default {
     InputWithLabel,
   },
   data: () => ({
-    hostPort: 8080,
+    hostPort: 5000,
     hostProject: '',
     projectFileArchive: '',
+    S4LDir: '',
     serverRunning: false
   }),
   mounted() {
     ipcRenderer.on('server-started', (event, arg) => {
       this.serverRunning = true;
+    });
+
+    ipcRenderer.on('server-stopped', (event, arg) => {
+      this.serverRunning = false;
     });
   },
   methods: {
@@ -48,28 +52,30 @@ export default {
       this.$router.push('/', { replace: true });
     },
 
-    startServer() {
+    async startServer() {
       if (!fs.existsSync(path.join(this.hostProject, 'S4L'))) {
         fs.mkdirSync(path.join(this.hostProject, 'S4L'));
       }
 
-      const files = fs.readdirSync(this.hostProject);
-      for (const file of files) {
-        if (file.endsWith('.als')) {
-          fs.copyFileSync(path.join(this.hostProject, file), path.join(this.hostProject, 'S4L', file));
-          fs.renameSync(path.join(this.hostProject, 'S4L', file), path.join(this.hostProject, 'S4L', file.split('.')[0] + '.7z'));
-          this.projectFileArchive = path.join(this.hostProject, 'S4L', file.split('.')[0] + '.7z');
-        }
-      }
+      this.S4LDir = path.join(this.hostProject, 'S4L');
 
-      extractProjectFile(this.projectFileArchive);
+      await VersionControl.initRepo(this.hostProject);
+      await VersionControl.addProjectFile(this.hostProject);
+      await VersionControl.commitProjectFile(this.hostProject, 'Initial commit');
+      // await VersionControl.pushProjectFile(this.hostProject);
 
       ipcRenderer.send('start-server', {
         port: this.hostPort,
         project: this.hostProject,
         projectFileArchive: this.projectFileArchive,
+        S4LDir: this.S4LDir,
         pid: this.pid
       });
+    },
+
+    getDiff() {
+      VersionControl.getDiff(this.S4LDir);
+      console.log('this should have gotten the diff');
     },
 
     browseProject() {

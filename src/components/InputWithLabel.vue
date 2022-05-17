@@ -1,14 +1,20 @@
 <template>
     <div class="input-with-label">
-        <label>{{ label }}</label>
-        <input type="text" v-model="value" />
+        <label v-if="!icon">{{ label }}</label>
+        <label v-else><i :class="'mdi mdi-' + label" :style="{ 'font-size': '18pt' }" /></label>
+        <input type="text" v-model="value" :placeholder="placeholder" />
     </div>
 </template>
 
 <script>
 export default {
     name: 'InputWithLabel',
-    props: ['label', 'value'],
+    props: {
+        label: String,
+        value: String,
+        placeholder: String,
+        icon: Boolean,
+    },
 }
 </script>
 
@@ -20,6 +26,7 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .input-with-label input {
@@ -44,5 +51,10 @@ export default {
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
+}
+
+.input-with-label input::placeholder {
+    font-weight: 200;
+    font-style: italic;
 }
 </style>

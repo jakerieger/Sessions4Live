@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const { getProcessList } = require('./getProcessList');
+const { ServerManager } = require('./server');
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -105,4 +106,9 @@ ipcMain.on('get-connection-status', async (event) => {
   } else if (process.platform === 'win32') {
     //
   }
+});
+
+ipcMain.on('start-server', async (event, args) => {
+  const server = new ServerManager(args.port, args.project);
+  server.Start();
 });
